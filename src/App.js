@@ -25,4 +25,4 @@ function App() {
 
 export default App;
 
-// 2.6
+// chapter 2 done
