@@ -40,24 +40,7 @@ export const login = (email,password) => async (dispatch) => {
     }
 }
 
-export const UserLogout = () => async (dispatch) => {
-    try{
-        dispatch({ type: USER_LOGIN_REQUEST })
-
-        const {data} = await axios.get('/api/user/login')
-
-        dispatch({
-            type:USER_LOGOUT,
-            payload: data,
-        })
-    }catch(error){
-
-        dispatch({
-            type: USER_LOGIN_FAIL,
-            payload: error.response && error.response.data.detail
-            ? error.message.data.detail
-            : error.message,
-        })
-
-    }
+export const logout = () => async (dispatch) => {
+    localStorage.removeItem('userInfo')
+    dispatch({type:USER_LOGOUT})
 }
