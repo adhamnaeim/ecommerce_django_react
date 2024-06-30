@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import { Link, useParams,useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { Row,Col,ListGroup,Image,Form,Button,Card } from 'react-bootstrap'
+import { Row,Col,Form,Button } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUserProfile } from '../actions/userActions'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/UserConstants'
 
 function ProfileScreen() {
     const [name,setName] = useState('')
@@ -13,7 +14,6 @@ function ProfileScreen() {
     const [confirmPassword,setConfirmPassword] = useState('')
     const [message,setMessage] = useState('')
     const navigate = useNavigate()
-    const location = useLocation()
     const dispatch = useDispatch()
 
 
@@ -23,18 +23,22 @@ function ProfileScreen() {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
+    const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+    const { success } = userUpdateProfile;
+
     useEffect(() => {
         if(!userInfo){
         navigate(`/login`)
         }else{
-            if(!user || !user.name){
+            if(!user || !user.name || success){
+                dispatch({type:USER_UPDATE_PROFILE_RESET})
                 dispatch(getUserDetails('profile'))
             }else{
                 setName(user.name)
                 setEmail(user.email)
             }
         }
-    },[dispatch,navigate,userInfo,user])
+    },[dispatch,navigate,userInfo,user,success])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -42,7 +46,13 @@ function ProfileScreen() {
         if(password !== confirmPassword){
             setMessage('passwords do not match!')
         }else{
-            console.log('updating')
+            dispatch(updateUserProfile({
+                'id':user._id,
+                'name': name,
+                'email': email,
+                'password': password,    
+            }))
+            setMessage('')
         }
     }
 
