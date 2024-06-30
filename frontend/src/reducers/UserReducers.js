@@ -87,7 +87,7 @@ export const UserUpdateProfileReducer = (state ={ },action) => {
         case USER_UPDATE_PROFILE_FAIL:
             return{ loading:false, error:action.payload }
 
-        case USER_REGISTER_REQUEST:
+        case USER_UPDATE_PROFILE_RESET:
             return {}
         
         default:
