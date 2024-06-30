@@ -53,7 +53,7 @@ export const UserRegisterReducer = (state ={ },action) => {
     }
 }
 
-export const UserDetailsReducer = (state ={ },action) => {
+export const UserDetailsReducer = (state ={ user: {} },action) => {
     switch(action.type){
 
         case USER_DETAILS_REQUEST:
