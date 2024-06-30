@@ -63,7 +63,7 @@ def updateUserProfile(Request):
     user.email = data['email'] 
     if data['password'] != '':
         user.password = make_password(data['password'])
-    user.save
+    user.save()
     return Response(serializer.data)
 
 @api_view(['GET'])
